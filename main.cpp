@@ -44,6 +44,7 @@ int main()
             // (지금은 콘솔에 메시지를 출력하여 테스트합니다)
             std::cout << "Timer ticked! A block should fall now." << std::endl;
 
+            block.move({0, BLOCK_SIZE});
             // 시계를 재시작하여 다음 0.5초를 셉니다.
             clock.restart();
         }

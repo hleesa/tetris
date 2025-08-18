@@ -1,14 +1,15 @@
 #include <SFML/Graphics.hpp>
 #include <iostream> // 콘솔 출력을 위해 추가
 
+const float BLOCK_SIZE = 20.f;
+
 int main()
 {
     sf::RenderWindow window(sf::VideoMode({800, 600}), "SFML Example");
 
-    // 점 객체 생성 (루프 시작 전)
-    sf::CircleShape point(2.f);
-    point.setFillColor(sf::Color::White);
-    point.setPosition({398.f, 298.f});
+    sf::RectangleShape block(sf::Vector2(BLOCK_SIZE, BLOCK_SIZE));
+    block.setFillColor(sf::Color::Red);
+    block.setPosition({390.f, 290.f});
 
     // 타이머를 위한 시계와 간격 설정
     sf::Clock clock;
@@ -49,7 +50,7 @@ int main()
 
         window.clear(sf::Color::Black);
         // 점을 화면에 그립니다 (clear와 display 사이)
-        window.draw(point);
+        window.draw(block);
 
         window.display();
     }

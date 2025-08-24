@@ -1,15 +1,28 @@
 #include <SFML/Graphics.hpp>
 #include <iostream> // 콘솔 출력을 위해 추가
 
+const int WINDOW_WIDTH = 800;
+const int WINDOW_HEIGHT = 600;
 const float BLOCK_SIZE = 20.f;
+const int BOARD_WIDTH = 10;
+const int BOARD_HEIGHT = 20;
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode({800, 600}), "SFML Example");
+    sf::RenderWindow window(sf::VideoMode({WINDOW_WIDTH, WINDOW_HEIGHT}), "tetris");
 
     sf::RectangleShape block(sf::Vector2(BLOCK_SIZE, BLOCK_SIZE));
     block.setFillColor(sf::Color::Red);
     block.setPosition({390.f, 290.f});
+
+    float boardX = (WINDOW_WIDTH - BOARD_WIDTH * BLOCK_SIZE) / 2.0f;
+    float boardY = (WINDOW_HEIGHT - BOARD_HEIGHT * BLOCK_SIZE) / 2.0f;
+    sf::RectangleShape gameBoard(sf::Vector2(BOARD_WIDTH * BLOCK_SIZE, BOARD_HEIGHT * BLOCK_SIZE));
+    gameBoard.setPosition({boardX, boardY});
+    gameBoard.setOutlineThickness(2.f);
+    gameBoard.setOutlineColor(sf::Color::White);
+    gameBoard.setFillColor(sf::Color::Transparent);
+
 
     // 타이머를 위한 시계와 간격 설정
     sf::Clock clock;
@@ -51,6 +64,7 @@ int main()
 
         window.clear(sf::Color::Black);
         // 점을 화면에 그립니다 (clear와 display 사이)
+        window.draw(gameBoard);
         window.draw(block);
 
         window.display();

@@ -7,13 +7,20 @@ const float BLOCK_SIZE = 20.f;
 const int BOARD_WIDTH = 10;
 const int BOARD_HEIGHT = 20;
 
+bool isValidPosition(sf::RectangleShape& gameBoard, sf::RectangleShape& block){
+    auto blockPosition = block.getPosition();
+    auto gameBoardPosition = gameBoard.getPosition();
+    if (blockPosition.x < gameBoardPosition.x || gameBoardPosition.x  + BOARD_WIDTH * BLOCK_SIZE < blockPosition.x) {
+        return false;
+    }
+    else if (blockPosition.y < gameBoardPosition.y || gameBoardPosition.y + BOARD_HEIGHT * BLOCK_SIZE < blockPosition.y + BLOCK_SIZE){
+        return false;
+    }
+    return true;}
+
 int main()
 {
     sf::RenderWindow window(sf::VideoMode({WINDOW_WIDTH, WINDOW_HEIGHT}), "tetris");
-
-    sf::RectangleShape block(sf::Vector2(BLOCK_SIZE, BLOCK_SIZE));
-    block.setFillColor(sf::Color::Red);
-    block.setPosition({390.f, 290.f});
 
     float boardX = (WINDOW_WIDTH - BOARD_WIDTH * BLOCK_SIZE) / 2.0f;
     float boardY = (WINDOW_HEIGHT - BOARD_HEIGHT * BLOCK_SIZE) / 2.0f;
@@ -23,6 +30,9 @@ int main()
     gameBoard.setOutlineColor(sf::Color::White);
     gameBoard.setFillColor(sf::Color::Transparent);
 
+    sf::RectangleShape block(sf::Vector2(BLOCK_SIZE, BLOCK_SIZE));
+    block.setFillColor(sf::Color::Red);
+    block.setPosition({boardX + (BOARD_WIDTH - 1) * BLOCK_SIZE / 2, boardY});
 
     // 타이머를 위한 시계와 간격 설정
     sf::Clock clock;
@@ -65,7 +75,9 @@ int main()
         window.clear(sf::Color::Black);
         // 점을 화면에 그립니다 (clear와 display 사이)
         window.draw(gameBoard);
-        window.draw(block);
+        if(isValidPosition(gameBoard, block)) {
+            window.draw(block);
+        }
 
         window.display();
     }

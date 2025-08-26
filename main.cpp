@@ -8,11 +8,9 @@ const float BLOCK_SIZE = 20.f;
 const int BOARD_WIDTH = 10;
 const int BOARD_HEIGHT = 20;
 
-//std::vector<int, std::vector<int>> game
-
-bool isValidPosition(sf::RectangleShape& gameBoard, sf::RectangleShape& block){
+bool isValidPosition(sf::RectangleShape& gameBoardOutline, sf::RectangleShape& block){
     auto blockPosition = block.getPosition();
-    auto gameBoardPosition = gameBoard.getPosition();
+    auto gameBoardPosition = gameBoardOutline.getPosition();
     if (blockPosition.x < gameBoardPosition.x || gameBoardPosition.x  + BOARD_WIDTH * BLOCK_SIZE < blockPosition.x) {
         return false;
     }
@@ -36,6 +34,8 @@ int main()
     sf::RectangleShape block(sf::Vector2(BLOCK_SIZE, BLOCK_SIZE));
     block.setFillColor(sf::Color::Red);
     block.setPosition({boardX + (BOARD_WIDTH - 1) * BLOCK_SIZE / 2, boardY});
+
+    std::vector<std::vector<int>> gameBoard(BOARD_HEIGHT, std::vector<int>(BOARD_WIDTH, 0));
 
     // 타이머를 위한 시계와 간격 설정
     sf::Clock clock;

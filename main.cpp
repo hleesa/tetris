@@ -2,38 +2,41 @@
 #include <iostream>
 #include <vector>
 
-const int WINDOW_WIDTH = 800;
-const int WINDOW_HEIGHT = 600;
-const float BLOCK_SIZE = 20.f;
+const int WINDOW_WIDTH = 40;
+const int WINDOW_HEIGHT = 30;
 const int BOARD_WIDTH = 10;
 const int BOARD_HEIGHT = 20;
+const float BLOCK_SIZE = 20.f;
 
-bool isValidPosition(sf::RectangleShape& gameBoardOutline, sf::RectangleShape& block){
+bool isValidPosition(sf::RectangleShape& gameBoardOutline, sf::RectangleShape& block) {
     auto blockPosition = block.getPosition();
     auto gameBoardPosition = gameBoardOutline.getPosition();
-    if (blockPosition.x < gameBoardPosition.x || gameBoardPosition.x  + BOARD_WIDTH * BLOCK_SIZE < blockPosition.x) {
+    if (blockPosition.x < gameBoardPosition.x || gameBoardPosition.x + BOARD_WIDTH * BLOCK_SIZE < blockPosition.x) {
         return false;
     }
-    else if (blockPosition.y < gameBoardPosition.y || gameBoardPosition.y + BOARD_HEIGHT * BLOCK_SIZE < blockPosition.y + BLOCK_SIZE){
+    else if (blockPosition.y < gameBoardPosition.y ||
+             gameBoardPosition.y + BOARD_HEIGHT * BLOCK_SIZE < blockPosition.y + BLOCK_SIZE) {
         return false;
     }
-    return true;}
+    return true;
+}
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode({WINDOW_WIDTH, WINDOW_HEIGHT}), "tetris");
+    sf::RenderWindow window(sf::VideoMode({static_cast<unsigned int>(WINDOW_WIDTH * BLOCK_SIZE),
+                                           static_cast<unsigned int>(WINDOW_HEIGHT * BLOCK_SIZE)}), "tetris");
 
-    float boardX = (WINDOW_WIDTH - BOARD_WIDTH * BLOCK_SIZE) / 2.0f;
-    float boardY = (WINDOW_HEIGHT - BOARD_HEIGHT * BLOCK_SIZE) / 2.0f;
     sf::RectangleShape gameBoardOutline(sf::Vector2(BOARD_WIDTH * BLOCK_SIZE, BOARD_HEIGHT * BLOCK_SIZE));
-    gameBoardOutline.setPosition({boardX, boardY});
+    float gameBoardX = (WINDOW_WIDTH - BOARD_WIDTH) / 2.0f;
+    float gameBoardY = (WINDOW_HEIGHT - BOARD_HEIGHT) / 2.0f;
+    gameBoardOutline.setPosition({gameBoardX * BLOCK_SIZE, gameBoardY * BLOCK_SIZE});
     gameBoardOutline.setOutlineThickness(2.f);
     gameBoardOutline.setOutlineColor(sf::Color::White);
     gameBoardOutline.setFillColor(sf::Color::Transparent);
 
     sf::RectangleShape block(sf::Vector2(BLOCK_SIZE, BLOCK_SIZE));
     block.setFillColor(sf::Color::Red);
-    block.setPosition({boardX + (BOARD_WIDTH - 1) * BLOCK_SIZE / 2, boardY});
+    block.setPosition({(gameBoardX + BOARD_WIDTH / 2 - 1) * BLOCK_SIZE, gameBoardY * BLOCK_SIZE});
 
     std::vector<std::vector<int>> gameBoard(BOARD_HEIGHT, std::vector<int>(BOARD_WIDTH, 0));
 
